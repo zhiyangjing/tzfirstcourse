@@ -291,6 +291,7 @@ promise.then(result => {
 // reject传递的失败结果会.catch里面
 ```
 
+
 ---
 layout: two-cols
 transition: fade

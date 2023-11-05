@@ -1,6 +1,6 @@
 ---
 theme: seriph
-background: https://source.unsplash.com/collection/94734566/1920x1080
+background: "./public/bkg.jpg"
 class: text-center
 highlighter: shiki
 lineNumbers: false
@@ -22,7 +22,7 @@ mdc: true
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    主讲人：jzy
+    主讲人：敬志扬
   </span>
 </div>
 
@@ -119,7 +119,7 @@ setTimeout(()=> console.log('111'),5000)
 // 在5s后输出111
 ```
 
-常见的回调函数还有setTimeout和setInterval等等
+常见的异步函数还有setTimeout和setInterval等等
 
 
 ---
@@ -202,6 +202,7 @@ setTimeout( ()=> {
 
 <div style="width:90%;">
 ```ts
+
 new Promise(function (resolve, reject) {
     setTimeout(()=>{
         console.log("First step");
@@ -219,7 +220,9 @@ new Promise(function (resolve, reject) {
         console.log("Third step");
     }, 3000);
 });
+
 ```
+
 </div>
 ---
 layout: two-cols
@@ -558,9 +561,11 @@ new Promise(function (resolve, reject) {
 
 ```ts
 async function print(message,delay) {
-  setTimeout( ()=>{
-    console.log(message)
-  },delay)
+  return new Promise((resolve,reject)=>{
+    setTimeout( ()=>{
+      console.log(message)
+    },delay)
+  })
 }
 
 async function main() {
@@ -580,13 +585,13 @@ Promise 的语法糖
 
 <div style="width:80%">
 
->awiat只能在async中使用。
+>await只能在async中使用。
 
 >async可能包含0个或多个 await。
 
 - async:在一个函数的开头添加 async，可以使它成为一个**异步函数**。
 
-<p style="text-decoration:line-through;">顾名思义awiat就是等等的意思（）</p>
+<p style="text-decoration:line-through;">顾名思义await就是等等的意思（）</p>
 
 - await:在调用一个返回 Promise 的函数前添加 await，可以使得异步函数**在该点暂停**，直到其等待的、基于promise 的异步操作完成再继续运行。此时 Promise 的**响应被当作返回值**，或者**被拒绝的响应被作为错误**抛出。
 
@@ -598,17 +603,22 @@ Promise 的语法糖
 <br/>
 
 ```ts
-async function print(message,delay) {
-  setTimeout( ()=>{
-    console.log(message)
-  },delay)
+function print(message, delay) {
+  return new Promise((resovle, reject) => {
+    setTimeout(() => {
+      console.log(message)
+      resovle()
+    }, delay)
+  })
 }
 
 async function main() {
-  await print('First step',1000)
-  await print('Second step',2000)
-  await print('Third step',3000)
+  await print('First step', 1000)
+  await print('Second step', 1000)
+  await print('Third step', 1000)
 }
+
+main()
 ```
 
 <v-click>
@@ -657,10 +667,12 @@ catch用来处理错误
 
 ```ts
 async function print(num,delay) {
-  setTimeout( ()=>{
-    if(num>100) resolve('good!')
-    else reject('fail')//throw也可以
-  },delay)
+  return new Promise((resolve,reject)=>{
+    setTimeout( ()=>{
+      if(num>100) resolve('good!')
+      else reject('fail')//throw也可以
+    },delay)
+  })
 }
 
 async function main() {
@@ -670,7 +682,7 @@ async function main() {
     console.log(err);
   }
   console.log(result)
-}
+}main()
 
 main();
 ```
@@ -844,7 +856,7 @@ console.log(hgtc[name])
 
 hgtc.grow()
 console.log(hgtc.age)
-hgtc.['grow']()
+hgtc['grow']()
 console.log(hgtc.age)
 ```
 
